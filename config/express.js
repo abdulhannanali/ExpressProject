@@ -21,12 +21,30 @@ module.exports = function(){
   app.set("views", "./views");
   app.set("view engine", "ejs");
 
+
+
   /// Routes
   app.set(require("../routes/index.routes")(app));
-  app.set(require("../routes/todo.routes")(app));
+  app.use(require("../routes/todo.routes"));
 
-  // Static Middle ware for serving static files
-  app.use(express.static(__dirname + "/public"));
+
+
+    // Static Middle ware for serving static files
+    app.use(express.static('./public'));
+
+  // 404 - NOT FOUND MIDDLEWARE
+  app.use(function(req, res, next){
+    res.status(404).render('404', {
+      url: req.hostname + req.originalUrl
+    });
+  });
+
+ // ERROR MIDDLEWARE
+ app.use(function(err, req, res, next){
+   res.status(500).render("errors",
+                        {message: err.message,
+                         stack: err.stack});
+ });
 
   return app;
 };

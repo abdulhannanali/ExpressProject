@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>New Task Creation</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+  </head>
+  <body class="container">
+    <div class="jumbotron">
+      <h2><%=title %></h2>
+    </div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h5 class="panel-title"><h6>Enter the info about the task here</h6></div>
+      <div class="panel-body">
+        <form action="<%=formAction %>" method="post" enctype="application/x-www-form-urlencoded">
+          <div class="form-group">
+            <label>Enter the name of the task</label>
+            <input type="text" class="form-control" name="taskName" value="<%=todo.taskName %>">
+          </div>
+          <div class="form-group">
+            <label>Enter the description of the task</label>
+            <input type="text" class="form-control" name="taskDescription" value="<%=todo.taskDescription %>">
+          </div>
+          <div class="form-group">
+            <label>Set the priority of the task</label>
+            <select class="form-control" name="priority">
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <% if (!update) { %>
+            <div class="form-group">
+              <label>Enter the start date of the task</label>
+              <br>
+              <input type="date" name="startDate" id="startDate">
+            </div>
+            <div class="form-group">
+              <label>Enter the end date of the task</label>
+              <input type="date" name="endDate" id="endDate">
+              <br>
+            </div>
+          <% } %>
+          <% if (update){ %>
+            <div class="form-group">
+              <label>Completion status of this task</label>
+              <select class="form-control" name="status">
+                <option value="false">Not Yet!</option>
+                <option value="true">Done</option>
+              </select>
+            </div>
+          <% } %>
+          <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-primary" value="Just Do It!">
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

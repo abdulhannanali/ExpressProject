@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>TODAPODA  - Your personal Todo List</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+  </head>
+  <body class="container-fluid">
+    <div class="jumbotron">
+      <h1>Welcome to the TODAPODA TodoList</h1>
+      <h3>You can create, delete, update and read about your todos tasks here</h3>
+      <a href="/todos/create"><button class="btn btn-primary btn-lg btn-block" >Click here to create a new task</button></a>
+    </div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Enter your search terms here: </h3>
+      </div>
+      <div class="panel-body">
+        <form  action="/todos/search" enctype="application/x-www-form-urlencoded" method="post">
+          <div class="form-group">
+            <label>Task Name</label>
+            <input type="text" class="form-control" name="taskName">
+          </div>
+          <div class="form-group">
+            <label>Task Description</label>
+            <input type="text" class="form-control" name=
+          </div>
+          <div class="form-group">
+            <label>Delete the search results too</label>
+            <input type="checkbox" name="check" value="remove">
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-default btn-sucess">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% if (isEmpty) { %>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <%=message %>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-striped table-hover">
+          <thead>
+            <th>#</th>
+            <th>ID</th>
+            <th>Name of Task</th>
+            <th>Desciption</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Priority<th>
+          </thead>
+          <tbody>
+            <%for (var i in todos) { %>
+              <tr class=" <%=todos[i].status ? "success" : "" %>">
+                <th><%=i %></th>
+                <td><%=todos[i]._id %></td>
+                <td><%=todos[i].taskName %></td>
+                <td><%=todos[i].taskDescription %></td>
+                <td><%=todos[i].startDate %></td>
+                <td><%=todos[i].endDate %></td>
+                <td><%=todos[i].priority %></td>
+                <td><a href="/todos/update/<%=todos[i].id %>">Update</a></td>
+                <td><a href="/todos/delete/<%=todos[i].id %>">Delete</a></td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% } %>
+  <%  if(!isEmpty){ %>
+    <div class="alert alert-info" role="alert">
+       <h5>Sorry no todos found. If you want to do this thang create a new task by creating the button above </h5>
+    </div>
+  <% } %>
+    <% if (remove) {%>
+      <div class="alert alert-warning">
+        <h5>The results searched for were also deleted</h5>
+      </div>
+    <% } %>
+  </body>
+</html>

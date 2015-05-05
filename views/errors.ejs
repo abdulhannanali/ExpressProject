@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>ERROR ERROR ERROR!</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <style media="screen">
+      .jumbotron {
+        background-color: red
+      }
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-md-8">
+          <h3>500 - Ooops a bug was found somewhere in our code. We are really sorry for this. Maybe try  sometime later </h3>
+        </div>
+        <div class="col-md-4">
+          <img src="/img/bug.png" class="img-responsive img-rounded" alt="bug in code" width="500" height="240">
+        </div>
+      </div>
+    </div>
+    <h4>If you are one of the developers of this site. Wait!!! We have some more info for you</h4>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <h5><%=message %></h5>
+        </div>
+      </div>
+      <div class="panel-body">
+        <p><%=stack %>
+      </div>
+    </div>
+  </body>
+</html>

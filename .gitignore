@@ -1,3 +1,4 @@
 /node_modules
 .tern-project
 /notes
+/public/bower_components

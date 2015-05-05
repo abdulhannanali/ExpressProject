@@ -1,14 +1,28 @@
 var todos = require("../controllers/todo.controller");
+var router = require('express').Router();
 
-module.exports = function(app){
-  app.route("/api/todos/")
-    .get(todos.getTodos)
+router.route("/todos")
+  .get(todos.getTodos)
+  .post(todos.createTodo);
+
+// Routes for creating the tasks
+router.route("/todos/create")
+    .get(todos.todoCreationPage)
     .post(todos.createTodo);
 
-  app.route("/api/todos/:taskId")
-    .get(todos.readTodo)
-    .delete(todos.deleteTodo);
+      // Searching routes
+router.route("/todos/search")
+    .post(todos.searchTodos);
 
-  app.param("taskId", todos.taskById);
 
-};
+router.route("/todos/update/:taskId")
+  .get(todos.updateInsert)
+  .post(todos.updateTodo);
+
+router.get("/todos/delete/:taskId", todos.deleteTodo);
+router.param("taskId", todos.taskById);
+
+/// Any route if uncatched will be taken router.route /todos
+router.route("/todos/*").get(todos.getTodos);
+
+module.exports = router;

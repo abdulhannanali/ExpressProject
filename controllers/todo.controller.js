@@ -1,5 +1,5 @@
-var Todo = require("mongoose").model("Todo");
-
+var Todo = require("mongoose").model("Todo"),
+    moment = require("moment");
 
 // Getting all the todos in the collection.
 exports.getTodos = function(req, res, next){
@@ -7,12 +7,13 @@ exports.getTodos = function(req, res, next){
     if (err){
       return next(err);
     }
+    console.log(todos.startDateF);
     res.render('todos', {
       todos: todos,
       message: 'With all the liberalism all the todos are here...',
       remove: false,
       form: true,
-      isEmpty: todos
+      isEmpty: isEmpty(todos)
     });
   });
 };
@@ -37,8 +38,8 @@ exports.createTodo = function(req, res, next){
     taskName: req.body.taskName,
     taskDescription: req.body.taskDescription || "",
     priority: req.body.priority,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate
+    startDate: dateTime(req.body.startDate, req.body.startTime),
+    endDate: dateTime(req.body.endDate, req.body.endTime)
   };
 
   Todo.create(todo, function(err, todo){
@@ -67,7 +68,21 @@ exports.todoCreationPage = function(req, res, next){
 
 
 exports.updateTodo = function(req, res, next){
-  Todo.findByIdAndUpdate(req.todo.id, req.body, function(err,user){
+  /// Constructing the todo object which is to be inserted for updating the document
+  var todo = {
+    taskName: req.body.taskName,
+    taskDescription: req.body.taskDescription,
+    piority: req.body.priority
+  };
+
+  if (req.body.startDate){
+    todo.startDate = dateTime(req.body.startDate, req.body.startTime);
+  }
+  if (req.body.endDate){
+    todo.endDate = dateTime(req.body.endDate, req.body.endTime);
+  }
+
+  Todo.findByIdAndUpdate(req.todo.id, todo, function(err,user){
     if (err){
       return next(err);
     }
@@ -134,11 +149,17 @@ exports.taskById = function(req, res, next, id){
 };
 
 var isEmpty = function(arr){
-  if (arr[0] === null)
+  if (arr[0] === undefined)
   {
-    return false;
-  }
-  else {
     return true;
   }
+  else {
+    return false;
+  }
+};
+
+
+var dateTime = function(date , time){
+  var dt = date + " " + time;
+  return moment(dt, dateTimeFormats).toDate();
 };

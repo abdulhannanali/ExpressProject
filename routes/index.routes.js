@@ -1,4 +1,6 @@
-  module.exports = function(app){
-  var index = require("../controllers/index.controller");
-  app.route ("/").get(index.render);
-};
+var project = require("../controllers/project.controller");
+var Router = require("express").Router();
+
+Router.route ("/").get(project.getProjectsIndex);
+
+module.exports = Router;

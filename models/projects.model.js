@@ -1,13 +1,14 @@
 var mongoose = require("mongoose"),
+    moment = require("moment"),
     Schema = mongoose.Schema;
 
-var projectsSchema = new Schema({
-  projectName: {
+var projectSchema = new Schema({
+  projName: {
     type: String,
     required: true,
     trim: true
   },
-  projectDescription: {
+  projDesc: {
     type: String,
     required: true
   },
@@ -28,3 +29,16 @@ var projectsSchema = new Schema({
     required: true
   }
 });
+
+projectSchema.virtual("shortProjDesc").get(function(){
+  if (this.projDesc){
+    return this.projDesc.slice(0, 100);
+  }
+  else {
+    return "No Description";
+  }
+});
+
+
+
+mongoose.model("Project", projectSchema);

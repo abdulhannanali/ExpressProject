@@ -1,5 +1,8 @@
 var mongoose = require("mongoose"),
+    moment = require("moment"),
     Schema = mongoose.Schema;
+
+dateTimeFormats = ["MM-DD-YYYY", "MM-DD-YYYY HH:mmA"]
 
 todoSchema = new Schema({
   taskName: {
@@ -17,28 +20,28 @@ todoSchema = new Schema({
   },
   startDate: {
     type: Date,
-    required: true,
-    get: function(date){
-      return date;
-    },
     set: function(date){
-      return this.startDate;
-    }
+      var formattedDate = moment(date, dateTimeFormats);
+      if (formattedDate.isValid()){
+        return new Date(formattedDate.format());
+      }
+      else {
+        return Date.now();
+      }
+    },
+    required: true
   },
   endDate: {
     type: Date,
     required: true,
-    get:function(date){
-      return date;
-    },
     set: function(date){
-      if (!date && this.startDate){
-        return Date.now;
+      var formattedDate = moment(date, dateTimeFormats);
+      if (formattedDate.isValid()){
+        return new Date(formattedDate.format());
       }
-      if (!date){
-        return this.startDate;
+      else {
+        return Date.now();
       }
-      return new Date(date);
     }
   },
   priority: {
@@ -46,5 +49,7 @@ todoSchema = new Schema({
     enum: ["High", "Low", "Medium"]
   }
 });
+
+
 
 mongoose.model("Todo", todoSchema);

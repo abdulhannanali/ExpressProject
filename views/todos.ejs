@@ -2,6 +2,10 @@
   <head>
     <title>TODAPODA  - Your personal Todo List</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/libs/moment.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    </script>
   </head>
   <body class="container-fluid">
     <div class="jumbotron">
@@ -34,7 +38,7 @@
       </div>
     </div>
   </div>
-  <% if (isEmpty) { %>
+  <% if (isEmpty === false) { %>
     <div class="panel panel-success">
       <div class="panel-heading">
         <h3 class="panel-title">
@@ -50,6 +54,8 @@
             <th>Desciption</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
             <th>Priority<th>
           </thead>
           <tbody>
@@ -59,8 +65,10 @@
                 <td><%=todos[i]._id %></td>
                 <td><%=todos[i].taskName %></td>
                 <td><%=todos[i].taskDescription %></td>
-                <td><%=todos[i].startDate %></td>
-                <td><%=todos[i].endDate %></td>
+                <td><%=:todos[i].startDate | displayDate  %></td>
+                <td><%=:todos[i].endDate | displayDate %></td>
+                <td><%=:todos[i].startDate | displayTime %></td>
+                <td><%=:todos[i].endDate | displayTime%></td>
                 <td><%=todos[i].priority %></td>
                 <td><a href="/todos/update/<%=todos[i].id %>">Update</a></td>
                 <td><a href="/todos/delete/<%=todos[i].id %>">Delete</a></td>
@@ -71,7 +79,7 @@
       </div>
     </div>
   <% } %>
-  <%  if(!isEmpty){ %>
+  <%  if(isEmpty === true){ %>
     <div class="alert alert-info" role="alert">
        <h5>Sorry no todos found. If you want to do this thang create a new task by creating the button above </h5>
     </div>

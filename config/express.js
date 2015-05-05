@@ -3,7 +3,9 @@ var express = require("express"),
     session = require("express-session"),
     morgan = require("morgan"),
     jade = require("jade"),
-    config = require("./config");
+    config = require("./config"),
+    ejs = require("ejs"),
+    moment = require("moment");
 
 module.exports = function(){
   var app = express();
@@ -17,15 +19,39 @@ module.exports = function(){
     encoded: true
   }));
 
+// EJS FILTERS
+ejs.filters.displayTime = function(obj){
+  var mObj = moment(obj);
+  if (mObj.isValid()){
+    return mObj.format("LT");
+  }
+  else {
+    return "Invalid Time! Sorry!!!";
+  }
+
+  };
+
+  ejs.filters.displayDate = function(obj){
+    var mObj = moment(obj);
+    if (mObj.isValid()){
+      return mObj.format("ll");
+    }
+    else {
+      return "Invalid Date!";
+    }
+  };
+
   // Setting the default views directory and the view engine
   app.set("views", "./views");
   app.set("view engine", "ejs");
 
 
 
-  /// Routes
-  app.set(require("../routes/index.routes")(app));
-  app.use(require("../routes/todo.routes"));
+  /// Routes in the /routes directory.
+  /// Using express.router for the routes
+  app.use(require("../routes/index.routes"));     // Index Routes
+  app.use(require("../routes/todo.routes"));      // Routes for the todo side
+  app.use(require("../routes/projects.routes"));  // Routes for the projects side
 
 
 
@@ -42,8 +68,10 @@ module.exports = function(){
  // ERROR MIDDLEWARE
  app.use(function(err, req, res, next){
    res.status(500).render("errors",
-                        {message: err.message,
-                         stack: err.stack});
+                        {
+                          message: err.message,
+                          stack: err.stack
+                        });
  });
 
   return app;

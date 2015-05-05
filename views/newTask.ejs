@@ -2,6 +2,8 @@
   <head>
     <title>New Task Creation</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/libs/moment.js" type="text/javascript">
+    </script>
   </head>
   <body class="container">
     <div class="jumbotron">
@@ -28,18 +30,20 @@
               <option value="Low">Low</option>
             </select>
           </div>
-          <% if (!update) { %>
-            <div class="form-group">
-              <label>Enter the start date of the task</label>
-              <br>
-              <input type="date" name="startDate" id="startDate">
-            </div>
-            <div class="form-group">
-              <label>Enter the end date of the task</label>
-              <input type="date" name="endDate" id="endDate">
-              <br>
-            </div>
-          <% } %>
+          <div class="form-group">
+            <label>Enter the start date and time of the task</label>
+            <br>
+            <input type="date" name="startDate" id="startDate">
+            <input type="time" name="startTime" id="startTime">
+          </div>
+          <div class="form-group">
+            <label>Enter the end date and time of the task</label>
+            <br>
+            <input type="date" name="endDate" id="endDate">
+            <input type="time" name="endTime" id="endTime">
+            <in
+            <br>
+          </div>
           <% if (update){ %>
             <div class="form-group">
               <label>Completion status of this task</label>

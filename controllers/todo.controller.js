@@ -1,6 +1,4 @@
-var Todo = require("mongoose").model("Todo"),
-    moment = require("moment");
-
+var Todo = require("mongoose").model("Todo");
 // Getting all the todos in the collection.
 exports.getTodos = function(req, res, next){
   Todo.find(function(err, todos){
@@ -34,13 +32,7 @@ exports.deleteTodo = function(req, res, next){
 
 // Controller for creating a todo. Uses the key values in body object of the request.
 exports.createTodo = function(req, res, next){
-  var todo = {
-    taskName: req.body.taskName,
-    taskDescription: req.body.taskDescription || "",
-    priority: req.body.priority,
-    startDate: dateTime(req.body.startDate, req.body.startTime),
-    endDate: dateTime(req.body.endDate, req.body.endTime)
-  };
+  var todo = todoConstructor(req.body);
 
   Todo.create(todo, function(err, todo){
     if (err){
@@ -69,18 +61,7 @@ exports.todoCreationPage = function(req, res, next){
 
 exports.updateTodo = function(req, res, next){
   /// Constructing the todo object which is to be inserted for updating the document
-  var todo = {
-    taskName: req.body.taskName,
-    taskDescription: req.body.taskDescription,
-    piority: req.body.priority
-  };
-
-  if (req.body.startDate){
-    todo.startDate = dateTime(req.body.startDate, req.body.startTime);
-  }
-  if (req.body.endDate){
-    todo.endDate = dateTime(req.body.endDate, req.body.endTime);
-  }
+  var todo = todoConstructor(req.body);
 
   Todo.findByIdAndUpdate(req.todo.id, todo, function(err,user){
     if (err){
@@ -148,6 +129,31 @@ exports.taskById = function(req, res, next, id){
   });
 };
 
+
+
+// Private Functions to the module
+var todoConstructor = function(requestBody){
+  var todo = {
+    taskName: requestBody.taskName,
+    taskDescription: requestBody.taskDescription,
+    priority: requestBody.priority,
+  };
+  if (requestBody.status){
+    todo.status = requestBody.status;
+  }
+  if (requestBody.startDate || requestBody.startTime){
+    todo.startDate = dateTime(requestBody.startDate, requestBody.startTime);
+  }
+  if (requestBody.endDate || requestBody.endTime){
+    todo.endDate = dateTime(requestBody.endDate, requestBody.endTime);
+  }
+
+  console.log(todo);
+
+  return todo;
+};
+
+
 var isEmpty = function(arr){
   if (arr[0] === undefined)
   {
@@ -158,8 +164,6 @@ var isEmpty = function(arr){
   }
 };
 
-
-var dateTime = function(date , time){
-  var dt = date + " " + time;
-  return moment(dt, dateTimeFormats).toDate();
+var dateTime = function(date, time){
+  return date + " " + time;
 };

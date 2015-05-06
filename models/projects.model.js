@@ -39,6 +39,6 @@ projectSchema.virtual("shortProjDesc").get(function(){
   }
 });
 
-
+  
 
 mongoose.model("Project", projectSchema);
